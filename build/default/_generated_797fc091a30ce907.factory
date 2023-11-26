@@ -1,0 +1,3 @@
+prototype: "/main/bullet_enemy.go"
+load_dynamically: false
+dynamic_prototype: false

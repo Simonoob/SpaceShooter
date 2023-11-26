@@ -1,0 +1,98 @@
+collision_shape: ""
+type: COLLISION_OBJECT_TYPE_TRIGGER
+mass: 0.0
+friction: 0.1
+restitution: 0.5
+group: "player"
+mask: "enemy_bullets"
+embedded_collision_shape {
+  shapes {
+    shape_type: TYPE_SPHERE
+    position {
+      x: 0.0
+      y: 8.541181
+      z: 0.0
+    }
+    rotation {
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+    }
+    index: 0
+    count: 1
+  }
+  shapes {
+    shape_type: TYPE_SPHERE
+    position {
+      x: 6.415932
+      y: -4.27059
+      z: 0.0
+    }
+    rotation {
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+    }
+    index: 1
+    count: 1
+  }
+  shapes {
+    shape_type: TYPE_SPHERE
+    position {
+      x: 14.11505
+      y: -12.811771
+      z: 0.0
+    }
+    rotation {
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      w: 1.0
+    }
+    index: 2
+    count: 1
+  }
+  shapes {
+    shape_type: TYPE_SPHERE
+    position {
+      x: -6.415932
+      y: -4.27059
+      z: 0.0
+    }
+    rotation {
+      x: 0.0
+      y: 0.0
+      z: -0.07361815
+      w: 0.9972865
+    }
+    index: 3
+    count: 1
+  }
+  shapes {
+    shape_type: TYPE_SPHERE
+    position {
+      x: -14.115051
+      y: -11.388241
+      z: 0.0
+    }
+    rotation {
+      x: 0.0
+      y: 0.0
+      z: -0.07361815
+      w: 0.9972865
+    }
+    index: 4
+    count: 1
+  }
+  data: 7.8688526
+  data: 7.8688526
+  data: 7.8688526
+  data: 7.8688526
+  data: 7.8688526
+}
+linear_damping: 0.0
+angular_damping: 0.0
+locked_rotation: false
+bullet: false
