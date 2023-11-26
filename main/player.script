@@ -1,0 +1,73 @@
+local lives = 4
+local base_movement_step = 1.5
+
+function init(self)
+	msg.post(".", "acquire_input_focus")
+	sound.play("#background_music")
+	
+
+	timer.delay(1, true, function()
+		sound.play("#bullet_shot")
+		factory.create("#bullet")
+		msg.post("/enemy", "shot_fired", {origin = go.get_position()})
+		msg.post("/enemy1", "shot_fired", {origin = go.get_position()})
+		msg.post("/enemy2", "shot_fired", {origin = go.get_position()})
+		msg.post("/enemy3", "shot_fired", {origin = go.get_position()})
+		msg.post("/enemy4", "shot_fired", {origin = go.get_position()})
+		msg.post("/enemy5", "shot_fired", {origin = go.get_position()})
+		msg.post("/enemy6", "shot_fired", {origin = go.get_position()})
+		msg.post("/enemy7", "shot_fired", {origin = go.get_position()})
+		msg.post("/enemy8", "shot_fired", {origin = go.get_position()})
+		msg.post("/enemy9", "shot_fired", {origin = go.get_position()})
+	end)
+end
+
+function on_input(self, action_id, action)
+	if action_id == hash('left') then
+		local pos = go.get_position()
+		pos.x = pos.x - math.pow(base_movement_step, lives)
+		go.set_position(pos)
+
+	elseif action_id == hash('right') then
+		local pos = go.get_position()
+		pos.x = pos.x + math.pow(base_movement_step, lives)
+		go.set_position(pos)
+	end
+end
+
+function update(self, dt)
+	msg.post("/enemy", "player_moved", {origin = go.get_position()})
+	msg.post("/enemy1", "player_moved", {origin = go.get_position()})
+	msg.post("/enemy2", "player_moved", {origin = go.get_position()})
+	msg.post("/enemy3", "player_moved", {origin = go.get_position()})
+	msg.post("/enemy4", "player_moved", {origin = go.get_position()})
+	msg.post("/enemy5", "player_moved", {origin = go.get_position()})
+	msg.post("/enemy6", "player_moved", {origin = go.get_position()})
+	msg.post("/enemy7", "player_moved", {origin = go.get_position()})
+	msg.post("/enemy8", "player_moved", {origin = go.get_position()})
+	msg.post("/enemy9", "player_moved", {origin = go.get_position()})
+end
+
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("trigger_response") and message.enter then
+		lives = lives - 1
+		msg.post("interface#main", 'player_hit', {lives_left = lives})
+		sound.play("#explosion")
+		particlefx.play("#explosion_particle")
+
+		if(lives < 1) then
+			go.delete()
+		else
+			if(lives == 3) then
+				msg.post("#sprite", "play_animation", {id = hash("player_3")})
+			end
+			if(lives == 2) then
+				msg.post("#sprite", "play_animation", {id = hash("player_2")})
+			end
+			if(lives == 1) then
+				msg.post("#sprite", "play_animation", {id = hash("player_1")})
+			end
+	end
+	end
+end

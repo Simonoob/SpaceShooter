@@ -1,0 +1,13 @@
+local score = 0
+local lives = 4
+
+function on_message(self, message_id, message, sender)
+	if(message_id == hash("player_hit")) then
+		lives = message.lives_left
+		gui.set_text(gui.get_node("lives"), lives)
+	end
+	if(message_id == hash("enemy_dead")) then
+	score = score + 137
+	gui.set_text(gui.get_node("score"), score * lives)
+	end
+end

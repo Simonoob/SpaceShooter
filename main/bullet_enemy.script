@@ -1,0 +1,14 @@
+function init(self)
+	local angle = math.rad(180)
+	go.set_rotation(vmath.quat_rotation_x(angle))
+	
+	go.animate(".", "position.y", go.PLAYBACK_ONCE_FORWARD, 0, go.EASING_LINEAR, 4, 0, function()
+		go.delete()
+	end)
+end
+
+function on_message(self, message_id, message, sender)
+	if message_id == hash("trigger_response") and message.enter then
+		go.delete()
+	end
+end

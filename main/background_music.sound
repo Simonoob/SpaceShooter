@@ -1,0 +1,7 @@
+sound: "/assets/stranger-things-124008.wav"
+looping: 1
+group: "master"
+gain: 0.07
+pan: 0.0
+speed: 2.0
+loopcount: 0

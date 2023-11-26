@@ -1,0 +1,105 @@
+local shooting_time_cap = 35 
+local shooting_time_cap_current = 0
+local enemies_count = 10
+local movement_step = 0.25
+local avoiding = false
+
+local function clamp(value, min, max)
+	if value < min then
+		return min
+	end
+	if value > max then
+		return max
+	end
+	return value
+end
+
+function getMovementStep()
+	return 2 / enemies_count
+end
+
+function updateShootingCap()
+	shooting_time_cap_current = shooting_time_cap * math.pow(1.2, enemies_count)
+end
+
+function shoot()
+	if(shooting_time_cap_current < 1) then
+		factory.create("#bullet")
+		sound.play("#bullet_shot")
+		updateShootingCap()
+	end
+end
+
+function moveAndAvoid(position)
+	avoiding = true
+	go.animate(".", "position.x", go.PLAYBACK_ONCE_FORWARD, position.x, go.EASING_OUTCUBIC, 0.3, 0, function()
+		avoiding = false
+	end)
+end
+
+
+function on_message(self, message_id, message, sender)
+
+	if message_id == hash("player_moved") and avoiding == false then
+		local position = go.get_position()
+		local tmp_step = getMovementStep() * 5 / enemies_count
+		local step =  clamp(tmp_step, 0.2, 1)
+		
+		if(position.x > message.origin.x) then
+			position.x = position.x - step
+			go.set_position(position)
+		else
+			position.x = position.x + step
+			go.set_position(position)
+		end
+		
+		local shoot_range = 75
+		local pos_difference = math.abs(position.x - message.origin.x)
+		if (pos_difference <= shoot_range) then
+			shoot()
+		end
+	end
+
+	if(message_id == hash("shot_fired")) then
+		local position = go.get_position()
+		local fire_from = message.origin
+		local step = 10
+		local range = 50
+		if(math.abs(fire_from.x - position.x) <= range) then
+			timer.delay(clamp(0.3 * (enemies_count + math.random(0, 2)), 0.1, 1), false, function()
+				if(fire_from.x > position.x) then
+					position.x = position.x - step
+					moveAndAvoid(position)
+				else
+					position.x = position.x + step
+					moveAndAvoid(position)
+				end
+			end)
+		end
+	end
+	
+	if message_id == hash("trigger_response") and message.enter then
+		sound.play("#explosion")
+		msg.post("interface#main", 'enemy_dead')
+		timer.delay(0.1, false, function()
+			particlefx.play("#explosion_particle")
+		end)
+		sprite.play_flipbook("#sprite", "enemy_death", function()
+			enemies_count = enemies_count - 1
+			updateShootingCap()
+			go.delete()
+		end)
+	end
+
+
+	
+end
+
+function update(self, dt)
+	if(shooting_time_cap_current) then
+		shooting_time_cap_current = shooting_time_cap_current - 1
+	end
+end
+
+
+
