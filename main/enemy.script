@@ -1,4 +1,4 @@
-local shooting_time_cap = 35 
+local shooting_time_cap = 85
 local shooting_time_cap_current = 0
 local enemies_count = 10
 local movement_step = 0.25
