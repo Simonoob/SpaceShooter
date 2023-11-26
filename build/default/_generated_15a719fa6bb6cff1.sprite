@@ -1,4 +1,0 @@
-tile_set: "/assets/game.atlas"
-default_animation: "enemy"
-material: "/builtins/materials/sprite.material"
-blend_mode: BLEND_MODE_ALPHA
